@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+body, html{
+    height: 100%;
+    width: 100%;
+}
+body{
+    font-family: 'Roboto', 'sans-serif';
+
+    display: grid;
+    grid-template-rows: minmax(auto, 115px) 1fr;
+}
+header{
+    background-color: #7267CB;
+    padding: 0 40px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+h1{
+    font-size: 50px;
+    font-weight: bold;
+    color: #FCFCFC;
+}
+#link-section{
+    column-gap: 40px;
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+a:any-link{
+    font-size: 30px;
+    color: #FCFCFC;
+    text-decoration: none;
+}
+main{
+    padding: 0 40px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+h2{
+    font-size: 40px;
+}
+p{
+    font-size: 30px;
+    font-weight: 200;
+}
+#app-description{
+    padding: 40px 0;
+    border-bottom: solid 1px black;
+
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    align-items: center;
+    justify-content: center;
+    column-gap: 40px;
+}
+@media (max-width: 1000px){
+    #app-description{
+        grid-template-columns: 1fr;
+        row-gap: 40px;
+    }
+}
+#desc{
+    text-align: justify;
+}
+#desc-img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+#user-stats{
+    padding: 40px 0;
+    text-align: center;
+}
