@@ -37,9 +37,11 @@ h1{
     flex-wrap: wrap;
 }
 a:any-link{
-    font-size: 25px;
     color: #FCFCFC;
     text-decoration: none;
+}
+.link {
+    font-size: 25px;
 }
 main{
     padding: 0 40px;
