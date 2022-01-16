@@ -2,7 +2,7 @@
 
 function open_database_connection() {
     // development local database
-    return new PDO("mysql:host=localhost;dbname=clocker", 'clocker', '');
+    return new PDO("mysql:host=localhost;dbname=clocker", 'dev', '');
 }
 
 function close_database_connection(&$connection) {
