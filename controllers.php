@@ -17,14 +17,18 @@ function password_recover_action() {
 }
 
 function start_task_action($taskTitle, $taskProject) {
-    start_task(1, $taskTitle);     // zmienić na aktualnie zalogowanego usera
+    start_task(1, $taskTitle);     // TODO: zmienić na aktualnie zalogowanego usera i wybieranie projektu
 }
 
 function stop_task_action() {
     stop_task();
 }
 
+function projects_action() {
+    require 'templates/projects.php';
+}
+
 function redirect_home() {
-    header( "Location: /", true, 302);
+    header( "Location: /?action=projects", true, 302);
     exit;
 }

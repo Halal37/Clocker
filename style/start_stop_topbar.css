@@ -1,13 +1,22 @@
+#top-bar {
+    width: calc(100% - 250px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #addTaskBtn {
-    font-size: 50px;
+    font-size: 40px;
     color: white;
     cursor: pointer;
+    display: flex;
 }
 
 #stopTaskBtn {
-    font-size: 50px;
+    font-size: 40px;
     color: red;
     cursor: pointer;
+    display: flex;
 }
 
 #activeTaskTitle, #timer {

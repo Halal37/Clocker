@@ -32,6 +32,9 @@ switch($requested_action) {
         stop_task_action();
         redirect_home();
         break;
+    case "projects":
+        projects_action();
+        break;
     default:
         header('HTTP/1.1 404 Not Found');
         echo '<html><body><h1>Page Not Found!</h1></body></html>';
