@@ -2,10 +2,11 @@
 body, html{
     height: 100%;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 body{
     font-family: 'Roboto', 'sans-serif';
-
     display: grid;
     grid-template-rows: minmax(auto, 115px) 1fr;
 }
@@ -13,12 +14,74 @@ header{
     background-color: #7267CB;
     padding: 0 40px;
     height: 100px;
-    
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
 }
+
+nav{
+    display: flex;
+    position: fixed;
+    flex-flow: column;
+    height: 100%;
+    background: #6E3CBC;
+    border-radius: 0 3rem 3rem 0;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.main-logo{
+    position: relative;
+    padding: 2.5rem;
+   
+}
+.main-logo::after{
+        content:'';
+        position:absolute;
+        width: 80%;
+        height: 0;
+        left: 2rem;
+        top: 6.1rem;           
+        border-bottom: 2px solid #fff;  
+    
+}
+nav > a {
+    padding: 10px 10px 10px 30px;
+    font-size: 1.1rem;
+}
+nav > a > i{
+    padding: 0 10px;
+    font-size: 1.6rem;
+}
+nav > a:hover{
+    background: rgb(152 186 231 / 50%);
+    border-radius: 0 1rem 1rem 0;
+
+}
+.circle{
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    color: #7267CB;
+    text-align: center;
+    background: #fff;
+      
+}
+.transform {
+    -webkit-transition: all 2s ease;  
+    -moz-transition: all 2s ease;  
+    -o-transition: all 2s ease;  
+    -ms-transition: all 2s ease;  
+    transition: all 2s ease;
+  }
+  
+  .transform-active {
+    background-color: #45CEE0;
+    height: 200px;
+    width: 200px;
+  }
+
 h1{
     font-size: 40px;
     font-weight: bold;
@@ -47,6 +110,7 @@ main{
     padding: 0 40px;
     display: grid;
     grid-template-rows: 1fr 1fr;
+    place-self: center;
 }
 h2{
     font-size: 40px;
@@ -197,3 +261,77 @@ p{
         width: 100px;
     }
 }
+/*Reports*/
+
+.bi-check2{
+    font-size: 15rem;
+    color: limegreen;
+    place-self: center;
+}
+main.raport-main{
+    grid-template-rows: none!important;
+  
+}
+
+@media (max-width:960px){
+main.raport-main{
+    grid-template-rows: none!important;
+    margin-left:25vw;
+}
+}
+
+
+/*Admin*/
+.app {
+    width: 70vw;
+    height: 100vh;
+    margin: 20px 0;
+    margin-left: 15rem;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  thead {
+  
+    border-bottom: 1.5px solid black;
+  }
+  
+  
+  th {
+    padding: 1rem 3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+  }
+  
+  td {
+    padding: 0.5rem 3rem;
+    font-size: 1rem;
+  }
+  td > button{
+    background: none;
+    border: 2px solid #7267CB;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+  
+  
+  tr {
+    border-bottom: 0.1px solid lightgray;
+  }
+#searchInput {
+    border: 0.1px solid lightgray;
+    outline: none;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+  
+  #searchInput:focus {
+    border-bottom: 2px solid #4575b6;
+  }
