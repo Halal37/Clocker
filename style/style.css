@@ -335,3 +335,88 @@ main.raport-main{
   #searchInput:focus {
     border-bottom: 2px solid #4575b6;
   }
+
+/*Project main*/
+
+
+.project{
+  
+  
+  display: block;
+  width: 70vw;
+  height: 10vh;
+  margin: 20px 0;
+  margin-left: 15rem;
+  position: relative;
+  
+  text-align: left;
+  border-radius: 25px;
+  background-color: rgba(196, 196, 196, 0.25);
+  }
+  
+  
+.project-name{
+      font-weight: bold;
+      text-align: left;
+      position: absolute;
+      left: 2%;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      
+     
+  }
+  
+  
+.number-of-tasks{  position: absolute;
+      top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+      left: 25%;
+      
+      border-left: 2px solid black;
+      padding: 1% 2%;
+      font-weight: bold;
+  }
+  
+.client-name{    position: absolute;
+      top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+      left: 49%;
+      
+      font-weight: bold;}
+  
+
+  
+a.button {
+      -webkit-appearance: button;
+      -moz-appearance: button;
+      appearance: button;
+  
+      text-decoration: none;
+      color: initial;
+      position: absolute;
+      font-family:"Roboto",sans-serif;
+      text-transform:uppercase;
+      outline: 0;
+  
+      cursor:pointer;
+  
+      color: white;
+      background: #6200EE;
+      border-radius: 28px;
+      left: 79%;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      padding: 6px;
+      
+    }
+.form button:hover,.form button:active{
+      background: #6200EE;
+  }
