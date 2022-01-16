@@ -5,10 +5,12 @@ function home_action() {
 }
 
 function register_action() {
+    register();
     require 'templates/register.php';
 }
 
 function login_action() {
+    login();
     require 'templates/login.php';
 }
 
