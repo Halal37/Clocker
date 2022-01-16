@@ -24,8 +24,13 @@ switch($requested_action) {
     case "password_recover":
         password_recover_action();
         break;
-    case "uploadTask":
-        upload_task_action($_GET['userID'], $_GET['taskName']);
+    case "startTask":
+        start_task_action($_POST['title'], $_POST['project']);
+        redirect_home();
+        break;
+    case "stopTask":
+        stop_task_action();
+        redirect_home();
         break;
     default:
         header('HTTP/1.1 404 Not Found');

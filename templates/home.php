@@ -63,7 +63,7 @@
     </div>
 </div>
 
-<script src="../cookie-alert.js"></script>
+<script src="../scripts/cookie-alert.js"></script>
 <?php $content = ob_get_clean() ?>
 
 <?php include 'landingPageLayout.php' ?>

@@ -1,0 +1,96 @@
+#addTaskBtn {
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+}
+
+#stopTaskBtn {
+    font-size: 50px;
+    color: red;
+    cursor: pointer;
+}
+
+#activeTaskTitle, #timer {
+    color: white;
+}
+
+.addTaskBackground {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.addTaskModal {
+    position: fixed;
+    background-color: white;
+    border-radius: 50px;
+    width: 700px;
+    height: 600px;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modalTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    margin-top: 70px;
+    margin-bottom: 30px;
+}
+
+.modalForm {
+    display: grid;
+    justify-content: center;
+    height: 100px;
+}
+
+.modalInput {
+    width: 400px;
+    height: 40px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.submitBtn {
+    background: none;
+    border: none;
+}
+
+.bi-play-circle-fill {
+    font-size: 200px;
+    color: #5DBC3C;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.bi-play-circle-fill:hover {
+    color: #000000;
+}
+
+.exitIcon {
+    font-size: 30px;
+    position: fixed;
+    right: 40px;
+    top: 30px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 700px){
+    .addTaskModal {
+        width: 90%;
+    }
+    .modalInput {
+        width: 100%;
+    }
+    .modalTitle {
+        margin-top: 90px;
+    }
+}

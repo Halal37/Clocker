@@ -17,6 +17,7 @@
 
     // Show the alert if we can't find the "acceptCookies" cookie
     if (!getCookie("acceptCookies")) {
+        cookieAlert.style.display = 'flex';
         cookieAlert.classList.add("show");
     }
 
@@ -25,6 +26,7 @@
     acceptCookies.addEventListener("click", function () {
         setCookie("acceptCookies", true, 365);
         cookieAlert.classList.remove("show");
+        cookieAlert.style.display = 'none';
 
         // dispatch the accept event
         window.dispatchEvent(new Event("cookieAlertAccept"))
