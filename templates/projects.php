@@ -9,7 +9,7 @@
           
             <div class="number-of-tasks">Lista zadań: 5</div>
             <div class="client-name">Klient: XXX</div>
-            <a href="https://google.com" class="button">Szczegóły</a>
+            <a href="#" class="button">Szczegóły</a>
         </form>
 
 

@@ -53,6 +53,7 @@
     </nav>
     <?= $content ?>
     <script src="../scripts/time-tracking.js"></script>
+    <script src="../scripts/manual-task-addition.js"></script>
 </body>
 
 </html>
