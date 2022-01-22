@@ -60,7 +60,7 @@ function add_manual_task($userID, $projectID, $taskName, $dateFrom, $dateTo){
     $taskID = $connection->lastInsertId() + 1;
 
     $statement = $connection->prepare("INSERT INTO Task(id, userID, projectID, nameTask, startTime, stopTime, status) 
-                        VALUES(:taskID, :userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive')");
+                        VALUES(:taskID, :userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive');");
                         
     $statement->bindParam('taskID', $taskID, PDO::PARAM_INT);
     $statement->bindParam('userID', $userID, PDO::PARAM_INT);

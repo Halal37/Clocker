@@ -4,6 +4,12 @@ const addManualTaskBtn = document.querySelector(".project-main-form .button"); /
 //     const formatedDateString = new Date(dateString).toISOString();
 //     return formatedDateString;
 // }
+function compareDates(dateFrom, dateTo){
+    dateFrom = new Date(dateFrom);
+    dateTo = new Date(dateTo);
+
+    return dateFrom > dateTo;
+}
 function createTaskPopup(){
     let background = document.createElement("div");
     let modal = document.createElement("div");
@@ -64,6 +70,21 @@ function createTaskPopup(){
     //     dateFrom.value = formatDateString(dateFrom.value);
     //     dateTo.value = formatDateString(dateTo.value);
     // })
+
+    //prevent user from entering earlier date than 'dateFrom' 
+    dateFrom.addEventListener("change", ()=>{
+        if(compareDates(dateFrom.value, dateTo.value)){
+            dateFrom.value = dateTo.value;
+        }
+        dateTo.min = dateFrom.value;
+    })
+    //prevent user from entering later date than 'dateTo' 
+    dateTo.addEventListener("change", ()=>{
+        if(compareDates(dateFrom.value, dateTo.value)){
+            dateTo.value = dateFrom.value;
+        }
+        dateFrom.max = dateTo.value;
+    })
     //exit popup window
     exitIcon.addEventListener("click", ()=>{
         document.body.removeChild(background);

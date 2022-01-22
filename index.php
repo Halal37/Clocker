@@ -34,7 +34,7 @@ switch($requested_action) {
         break;
     case "addManualTask":
         add_manual_task_action($_POST['title'], $_POST['project'], $_POST['dateFrom'], $_POST['dateTo']);
-        // redirect_home();
+        redirect_home();
         break;
     case "projects":
         projects_action();
