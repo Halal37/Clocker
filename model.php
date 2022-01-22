@@ -2,7 +2,7 @@
 
 function open_database_connection() {
     // development local database
-    return new PDO("mysql:host=localhost;dbname=clocker", 'dev', '');
+    return new PDO("mysql:host=localhost;dbname=Clocker", 'dev', '');
 }
 
 function close_database_connection(&$connection) {
@@ -45,6 +45,31 @@ function stop_task() {
     setcookie("activeTaskId", "", time() - 3600);
     setcookie("activeTaskName", "", time() - 3600);
     setcookie("activeTaskStartTime", "", time() - 3600);
+
+    close_database_connection($connection);
+}
+
+function add_manual_task($userID, $projectID, $taskName, $dateFrom, $dateTo){
+    $datetimeFromConverted = new DateTime($dateFrom);
+    $datetimeFromConverted = $datetimeFromConverted->format('Y-m-d H:i:s');
+
+    $datetimeToConverted = new DateTime($dateTo);
+    $datetimeToConverted = $datetimeToConverted->format('Y-m-d H:i:s');
+
+    $connection = open_database_connection();
+    $taskID = $connection->lastInsertId() + 1;
+
+    $statement = $connection->prepare("INSERT INTO Task(id, userID, projectID, nameTask, startTime, stopTime, status) 
+                        VALUES(:taskID, :userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive')");
+                        
+    $statement->bindParam('taskID', $taskID, PDO::PARAM_INT);
+    $statement->bindParam('userID', $userID, PDO::PARAM_INT);
+    $statement->bindParam('projectID', $projectID, PDO::PARAM_INT);
+    $statement->bindParam('taskName', $taskName);
+    $statement->bindParam('datetimeFrom', $datetimeToConverted);
+    $statement->bindParam('datetimeTo', $datetimeToConverted);
+
+    $statement->execute();
 
     close_database_connection($connection);
 }

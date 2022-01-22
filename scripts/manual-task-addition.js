@@ -1,5 +1,9 @@
-const addManualTaskBtn = document.querySelector(".project-main-form .button");
+const addManualTaskBtn = document.querySelector(".project-main-form .button"); // Change it when Project view is added
 
+// function formatDateString(dateString){
+//     const formatedDateString = new Date(dateString).toISOString();
+//     return formatedDateString;
+// }
 function createTaskPopup(){
     let background = document.createElement("div");
     let modal = document.createElement("div");
@@ -55,6 +59,11 @@ function createTaskPopup(){
     document.body.appendChild(background);
     document.body.appendChild(modal);
 
+    // format date input before submiting form
+    // submitBtn.addEventListener("click", ()=>{
+    //     dateFrom.value = formatDateString(dateFrom.value);
+    //     dateTo.value = formatDateString(dateTo.value);
+    // })
     //exit popup window
     exitIcon.addEventListener("click", ()=>{
         document.body.removeChild(background);
