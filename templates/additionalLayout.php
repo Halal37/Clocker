@@ -36,7 +36,7 @@
                 <?php endif ?>
 
                 <a href="#">User</a>
-                <a href="./index_old_theme.html" id="login-link" class="link"><div class="circle">U</div></a>
+                <a href="/?action=logout" id="login-link" class="link"><div class="circle">U</div></a>
             </div>
         </div>
 
