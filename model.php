@@ -50,154 +50,134 @@ function stop_task() {
 }
 
 function register() {
-    $connection = open_database_connection();
-
-    require_once "connect.php";
-
-    $username = $password = $confirm_password = $email = $lastname = "";
-    $username_err = $password_err = $confirm_password_err =$email_err= "";
-
-
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-
-        if(empty(trim($_POST["username"]))){
-            $username_err = "Please enter a username.";
-        } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
-            $username_err = "username can only contain letters, numbers, and underscores.";
-        } else{
-
-            $sql = "SELECT id FROM user WHERE username = ?";
-
-            if($stmt = mysqli_prepare($link, $sql)){
-
-                mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-
-                $param_username = trim($_POST["username"]);
-
-                if(mysqli_stmt_execute($stmt)){
-
-                    mysqli_stmt_store_result($stmt);
-
-                    if(mysqli_stmt_num_rows($stmt) == 1){
-                        $username_err = "This username is already taken.";
+    try{ 
+        $connection = open_database_connection();
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $username = $password = $confirm_password = $email = $lastname = "";
+        $username_err = $password_err = $confirm_password_err =$email_err= "";
+         
+            if(empty(trim($_POST["username"]))){
+                $username_err = "Please enter a username.";
+                
+            } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
+                $username_err = "username can only contain letters, numbers, and underscores.";
+    
+            } else{$username=$_POST["username"];
+    
+                if(empty(trim($_POST["lastname"]))){
+                    $username_err = "Please enter a ulastname.";
+    
+                } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["lastname"]))){
+                    $username_err = "username can only contain letters, numbers, and underscores.";
+    
+                } else{ $lastname=$_POST["lastname"];
+    
+                    if(empty(trim($_POST["email"]))){
+                        $email_err = "Please enter a email.";
+    
+                    } elseif(!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', trim($_POST["email"]))){
+                        $email_err = "Please enter a valid email.";
+    
                     } else{
-                        $username = trim($_POST["username"]);
-                    }
-                } else{
-                    echo "Oops! Something went wrong. Please try again later.";
+                        $email=$_POST["email"];
+    
+                $statement = $connection->prepare("SELECT username, email FROM user where username = :username OR email = :email");
+                $statement->bindParam(':username', $username, PDO::PARAM_STR);
+                $statement->bindParam(':email', $email, PDO::PARAM_STR);
+                $statement->execute();
+                $check=$statement->fetchall();
+    
+                if($statement->rowCount()>0){
+                    $username_err= "This user already exists";
                 }
-
-
-                mysqli_stmt_close($stmt);
-            }
-        }
-        echo $username_err;
-
-
-        if(empty(trim($_POST["email"]))){
-            $email_err = "Please enter a email.";
-        } elseif(!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', trim($_POST["email"]))){
-            //$email_err = "email can only contain letters, numbers, and underscores.";
-        } else{
-
-            $sql = "SELECT id FROM user WHERE email = ?";
-
-            if($stmt = mysqli_prepare($link, $sql)){
-
-                mysqli_stmt_bind_param($stmt, "s", $param_email);
-
-
-                $param_email= trim($_POST["email"]);
-
-
-                if(mysqli_stmt_execute($stmt)){
-
-                    mysqli_stmt_store_result($stmt);
-
-                    if(mysqli_stmt_num_rows($stmt) == 1){
-                        $email_err = "This email is already taken.";
-                    } else{
-                        $email = trim($_POST["email"]);
-                    }
+                if(empty(trim($_POST["password"]))){
+                    $password_err = "Please enter a password.";     
+                } elseif(strlen(trim($_POST["password"])) < 6){
+                    $password_err = "Password must have atleast 6 characters.";
                 } else{
-                    echo "Oops! Something went wrong. Please try again later.";
+                    $password = trim($_POST["password"]);
                 }
-
-
-                mysqli_stmt_close($stmt);
+                
+               
+                if(empty(trim($_POST["confirm_password"]))){
+                    $confirm_password_err = "Please confirm password.";     
+                } else{
+                    $confirm_password = trim($_POST["confirm_password"]);
+                    if(empty($password_err) && ($password != $confirm_password)){
+                        $confirm_password_err = "Password did not match.";
+                    }
+                }
             }
+            echo $username_err;
+            echo $password_err;
+            echo $confirm_password_err;
+            echo $email_err;
+          }
         }
-    echo $email_err;
-        echo "po mailu";
-
-        if(empty(trim($_POST["password"]))){
-            $password_err = "Please enter a password.";
-        } elseif(strlen(trim($_POST["password"])) < 6){
-            $password_err = "Password must have atleast 6 characters.";
-        } else{
-            $password = trim($_POST["password"]);
-        }
-
-
-        if(empty(trim($_POST["confirm_password"]))){
-            $confirm_password_err = "Please confirm password.";
-        } else{
-            $confirm_password = trim($_POST["confirm_password"]);
-            if(empty($password_err) && ($password != $confirm_password)){
-                $confirm_password_err = "Password did not match.";
-            }
-        }
-        echo $password_err;
-        echo $confirm_password_err;
-        $lastname=$_POST["lastname"];
-
+        
         if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($email_err)){
-
-
-            $sql = "INSERT INTO user (username,lastname, email, password) VALUES (?, ?, ?, ?)";
-
-            if($stmt = mysqli_prepare($link, $sql)){
-
-                mysqli_stmt_bind_param($stmt, "ssss", $param_username,$param_lastname,$param_email, $param_password);
-
-
-                $param_username = $username;
-                $param_lastname=$lastname;
-                $param_email= $email;
-                $param_password = password_hash($password, PASSWORD_DEFAULT);
-
-                print_r($stmt);
-
-                if(mysqli_stmt_execute($stmt)){
-
-                    printf("%d row inserted.\n", mysqli_stmt_affected_rows($stmt));
-                    header("Location: /?action=login");
-                } else{
-                    echo "Error description: " . mysqli_error($link);
-                    echo "Oops! Something went wrong. Please try again later.";
-                }
-
-
-                mysqli_stmt_close($stmt);
-            }
+               
+            $param_username = $username;
+            $param_lastname=$lastname;
+            $param_email= $email;
+            $param_password = password_hash($password, PASSWORD_DEFAULT); 
+            $param_user_type="user";
+            
+            $stmt=$connection->prepare("INSERT INTO user (username,lastname, email, password) VALUES (:username, :lastname, :email, :password)");
+            $data = [
+                'username'=>$param_username,
+                'lastname'=>$param_lastname, 
+                'email'=>$param_email,
+                'password'=>$param_password  
+            ];
+            if($stmt->execute($data)){
+                           
+                echo "Goooood";
+            }else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }          
         }
-
-
-        mysqli_close($link);
-    }
-
-
-
-
-    close_database_connection($connection);
+          
+           close_database_connection($connection);
+        }catch(PDOException $e){
+            echo  $e->getMessage();
+       }
 }
 
 function login() {
-    $connection = open_database_connection();
-
-//    ......
-
-    close_database_connection($connection);
+    $username = $password = "";
+    $username_err = $password_err = $username_err = "";
+    $username =$_POST['username'];
+    $password =$_POST['password'];
+    if (!empty($_POST['username']) && !empty($_POST['password'])){
+    try{
+        $connection = open_database_connection();
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $statement = $connection->prepare("SELECT * FROM user where username = :username");
+        $statement->bindParam(':username', $username, PDO::PARAM_STR);
+        $statement->execute();
+        $check=$statement->fetch();
+        if($statement->rowCount()>0){
+                if(password_verify($password,$check["password"])){
+                    session_start();
+                    $_SESSION["user_login"]=$check["id"];
+                    header("location: http://localhost/Clocker-main/client/pages/projects.php");
+    
+                }else{
+                echo "Incorrect password";
+                }
+        }else{
+           echo "This user does not exist"; 
+        }
+        close_database_connection($connection);
+    }catch(PDOException $error){
+        echo $error->getMessage();
+    }
+    
+     }
+}
+function logout(){
+    session_start();
+    session_destroy();
+    //header("location: http://localhost/Clocker-main/client/pages/logins.php");   
 }
