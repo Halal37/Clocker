@@ -1,8 +1,14 @@
 <?php
 
-function open_database_connection() {
+require_once __DIR__ . '/vendor/autoload.php';
+
+function open_database_connection(): PDO
+{
     // development local database
-    return new PDO("mysql:host=localhost;dbname=Clocker", 'dev', '');
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+
+    return new PDO("mysql:host={$_ENV['DB_URL']};dbname={$_ENV['DB_DB']}", "{$_ENV['DB_USER']}", "{$_ENV['DB_PASS']}");
 }
 
 function close_database_connection(&$connection) {
@@ -57,16 +63,14 @@ function add_manual_task($userID, $projectID, $taskName, $dateFrom, $dateTo){
     $datetimeToConverted = $datetimeToConverted->format('Y-m-d H:i:s');
 
     $connection = open_database_connection();
-    $taskID = $connection->lastInsertId() + 1;
 
-    $statement = $connection->prepare("INSERT INTO Task(id, userID, projectID, nameTask, startTime, stopTime, status) 
-                        VALUES(:taskID, :userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive');");
-                        
-    $statement->bindParam('taskID', $taskID, PDO::PARAM_INT);
+    $statement = $connection->prepare("INSERT INTO Task(userID, projectID, nameTask, startTime, stopTime, status) 
+                        VALUES(:userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive');");
+
     $statement->bindParam('userID', $userID, PDO::PARAM_INT);
     $statement->bindParam('projectID', $projectID, PDO::PARAM_INT);
     $statement->bindParam('taskName', $taskName);
-    $statement->bindParam('datetimeFrom', $datetimeToConverted);
+    $statement->bindParam('datetimeFrom', $datetimeFromConverted);
     $statement->bindParam('datetimeTo', $datetimeToConverted);
 
     $statement->execute();
@@ -74,38 +78,37 @@ function add_manual_task($userID, $projectID, $taskName, $dateFrom, $dateTo){
     close_database_connection($connection);
 }
 
-function register() {
+function register($username, $firstname, $lastname, $email, $password, $confirm_password) {
+    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);
     try{ 
         $connection = open_database_connection();
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $username = $password = $confirm_password = $email = $lastname = "";
         $username_err = $password_err = $confirm_password_err =$email_err= "";
          
-            if(empty(trim($_POST["username"]))){
+            if(empty(trim($username))){
                 $username_err = "Please enter a username.";
                 
-            } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
+            } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($username))){
                 $username_err = "username can only contain letters, numbers, and underscores.";
     
-            } else{$username=$_POST["username"];
+            } else{
+
+                if(empty(trim($lastname))){
+                    $username_err = "Please enter a lastname.";
     
-                if(empty(trim($_POST["lastname"]))){
-                    $username_err = "Please enter a ulastname.";
-    
-                } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["lastname"]))){
+                } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($lastname))){
                     $username_err = "username can only contain letters, numbers, and underscores.";
     
-                } else{ $lastname=$_POST["lastname"];
-    
-                    if(empty(trim($_POST["email"]))){
+                } else{
+
+                    if(empty(trim($email))){
                         $email_err = "Please enter a email.";
     
-                    } elseif(!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', trim($_POST["email"]))){
+                    } elseif(!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', trim($email))){
                         $email_err = "Please enter a valid email.";
     
                     } else{
-                        $email=$_POST["email"];
-    
+
                 $statement = $connection->prepare("SELECT username, email FROM user where username = :username OR email = :email");
                 $statement->bindParam(':username', $username, PDO::PARAM_STR);
                 $statement->bindParam(':email', $email, PDO::PARAM_STR);
@@ -115,19 +118,19 @@ function register() {
                 if($statement->rowCount()>0){
                     $username_err= "This user already exists";
                 }
-                if(empty(trim($_POST["password"]))){
+                if(empty(trim($password))){
                     $password_err = "Please enter a password.";     
-                } elseif(strlen(trim($_POST["password"])) < 6){
-                    $password_err = "Password must have atleast 6 characters.";
+                } elseif(strlen(trim($password)) < 6){
+                    $password_err = "Password must have at least 6 characters.";
                 } else{
-                    $password = trim($_POST["password"]);
+                    $password = trim($password);
                 }
                 
                
-                if(empty(trim($_POST["confirm_password"]))){
+                if(empty(trim($confirm_password))){
                     $confirm_password_err = "Please confirm password.";     
                 } else{
-                    $confirm_password = trim($_POST["confirm_password"]);
+                    $confirm_password = trim($confirm_password);
                     if(empty($password_err) && ($password != $confirm_password)){
                         $confirm_password_err = "Password did not match.";
                     }
@@ -143,21 +146,22 @@ function register() {
         if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($email_err)){
                
             $param_username = $username;
+            $param_firstname = $firstname;
             $param_lastname=$lastname;
             $param_email= $email;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); 
-            $param_user_type="user";
-            
-            $stmt=$connection->prepare("INSERT INTO user (username,lastname, email, password) VALUES (:username, :lastname, :email, :password)");
+            $param_password = password_hash($password, PASSWORD_DEFAULT);
+
+            $stmt=$connection->prepare("INSERT INTO user (username,firstname,lastname, email, password) VALUES (:username, :firstname, :lastname, :email, :password)");
             $data = [
                 'username'=>$param_username,
+                'firstname'=>$param_firstname,
                 'lastname'=>$param_lastname, 
                 'email'=>$param_email,
                 'password'=>$param_password  
             ];
             if($stmt->execute($data)){
-                           
-                echo "Goooood";
+                header( "Location: /?action=login", true, 302);
+
             }else{
                 echo "Oops! Something went wrong. Please try again later.";
             }          
@@ -169,12 +173,10 @@ function register() {
        }
 }
 
-function login() {
-    $username = $password = "";
-    $username_err = $password_err = $username_err = "";
-    $username =$_POST['username'];
-    $password =$_POST['password'];
-    if (!empty($_POST['username']) && !empty($_POST['password'])){
+function login($username, $password) {
+    error_reporting(E_ERROR | E_PARSE);
+
+    if (!empty($username) && !empty($password)){
     try{
         $connection = open_database_connection();
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -183,14 +185,25 @@ function login() {
         $statement->execute();
         $check=$statement->fetch();
         if($statement->rowCount()>0){
-                if(password_verify($password,$check["password"])){
-                    session_start();
-                    $_SESSION["user_login"]=$check["id"];
-                    header("location: http://localhost/Clocker-main/client/pages/projects.php");
-    
-                }else{
-                echo "Incorrect password";
+            if(password_verify($password,$check["password"])) {
+                session_start();
+
+                $_SESSION["user_login"]=$check["id"];
+                $_SESSION["user_name"]=$check["firstname"] . " " . $check["lastname"];
+
+                $words = explode(" ", $_SESSION["user_name"]);
+                $initials = "";
+
+                foreach ($words as $w) {
+                    $initials .= $w[0];
                 }
+
+                $_SESSION["user_initials"]=$initials;
+
+                header( "Location: /?action=projects", true, 302);
+            } else {
+                echo "Incorrect password";
+            }
         }else{
            echo "This user does not exist"; 
         }
@@ -201,8 +214,10 @@ function login() {
     
      }
 }
+
 function logout(){
     session_start();
+    setcookie("PHPSESSID", "", time() - 3600);
     session_destroy();
-    //header("location: http://localhost/Clocker-main/client/pages/logins.php");   
+    session_write_close();
 }

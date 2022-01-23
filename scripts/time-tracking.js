@@ -1,5 +1,4 @@
 const addTaskBtn = document.getElementById("addTaskBtn");
-const stopTaskBtn = document.getElementById("stopTaskBtn");
 const timer = document.getElementById("timer");
 
 if (addTaskBtn) {
@@ -131,8 +130,6 @@ if (timer) {
       timer.innerText = getElapsedTime(startTime); //pass the actual record start time
    }, 1000);
 
-   stopTaskBtn.addEventListener("click", () => {
 
-   });
 
 }

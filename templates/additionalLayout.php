@@ -35,8 +35,8 @@
                     <i id="addTaskBtn" class="bi-plus-circle-dotted"></i>
                 <?php endif ?>
 
-                <a href="#">User</a>
-                <a href="/?action=logout" id="login-link" class="link"><div class="circle">U</div></a>
+                <i class="username-topbar"><?php echo $_SESSION['user_name'] ?></i>
+                <a href="/?action=logout" id="login-link" class="link"><div class="circle"><?php echo $_SESSION['user_initials'] ?></div></a>
             </div>
         </div>
 

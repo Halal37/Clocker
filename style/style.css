@@ -420,3 +420,8 @@ a.button {
 .form button:hover,.form button:active{
       background: #6200EE;
   }
+
+.username-topbar {
+    color: white;
+    font-size: 20px;
+}

@@ -1,9 +1,6 @@
-const addManualTaskBtn = document.querySelector(".project-main-form .button"); // Change it when Project view is added
+const addManualTaskBtn = document.querySelector(".project-main-form .button");
+// TODO: Change it when Project view is added
 
-// function formatDateString(dateString){
-//     const formatedDateString = new Date(dateString).toISOString();
-//     return formatedDateString;
-// }
 function compareDates(dateFrom, dateTo){
     dateFrom = new Date(dateFrom);
     dateTo = new Date(dateTo);
@@ -65,11 +62,6 @@ function createTaskPopup(){
     document.body.appendChild(background);
     document.body.appendChild(modal);
 
-    // format date input before submiting form
-    // submitBtn.addEventListener("click", ()=>{
-    //     dateFrom.value = formatDateString(dateFrom.value);
-    //     dateTo.value = formatDateString(dateTo.value);
-    // })
 
     //prevent user from entering earlier date than 'dateFrom' 
     dateFrom.addEventListener("change", ()=>{

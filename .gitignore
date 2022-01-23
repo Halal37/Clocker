@@ -1,6 +1,6 @@
 .idea/
 .env
 .env.development
-.env.production
+.env
 vendor/
 composer.lock
