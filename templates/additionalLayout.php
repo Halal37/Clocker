@@ -36,7 +36,7 @@
                 <?php endif ?>
 
                 <i class="username-topbar"><?php echo $_SESSION['user_name'] ?></i>
-                <a href="/?action=logout" id="login-link" class="link"><div class="circle"><?php echo $_SESSION['user_initials'] ?></div></a>
+                <a href="/?action=projectDetail" id="login-link" class="link"><div class="circle"><?php echo $_SESSION['user_initials'] ?></div></a>
             </div>
         </div>
 

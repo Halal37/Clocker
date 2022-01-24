@@ -1,0 +1,5 @@
+ALTER TABLE `heroku_2dd70852a3d0dff`.`user` 
+ADD COLUMN `role` VARCHAR(100) NOT NULL AFTER `datatime`;
+
+ALTER TABLE `heroku_2dd70852a3d0dff`.`client` 
+DROP COLUMN `role`;

@@ -14,11 +14,17 @@ switch($requested_action) {
         register_action($_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['password'], $_POST['confirm_password']);
         break;
     case "login":
-        login_action($_POST['username'], $_POST['password']);
+        login_action("ala", $_POST['password']);
         break;
     case "logout":
-        logout_action();
+        logout();
         break;
+    case "projects_details":
+        projects_details();
+        break;
+    case "projectDetail":
+            projectDetail();
+            break;
     case "password_recover":
         password_recover_action();
         break;
@@ -47,11 +53,7 @@ switch($requested_action) {
         }
         break;
     case "projects":
-        if(user_logged_in()) {
-            projects_action();
-        } else {
-            redirect_login();
-        }
+       projects_action();
         break;
     default:
         header('HTTP/1.1 404 Not Found');
