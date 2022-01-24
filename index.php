@@ -35,6 +35,14 @@ switch($requested_action) {
             redirect_login();
         }
             break;
+    case "group":
+        if(user_logged_in()) {
+            group_action();
+         redirect_home();
+            } else {
+             redirect_login();
+          }
+              break;
     case "password_recover":
         password_recover_action();
         break;

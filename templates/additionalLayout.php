@@ -19,7 +19,7 @@
         <div id="top-bar" style="   <?php if(isset($_COOKIE['activeTaskName'])) : ?>
                                         justify-content: space-between;
                                     <?php else : ?>
-                                        justify-content: flex-end;
+                                        s
                                     <?php endif ?>">
 
             <?php if(isset($_COOKIE['activeTaskName'])) : ?>
@@ -35,8 +35,8 @@
                     <i id="addTaskBtn" class="bi-plus-circle-dotted"></i>
                 <?php endif ?>
 
-                <i class="username-topbar"><?php echo $_SESSION['user_name'] ?></i>
-                <a href="/?action=projectDetail" id="login-link" class="link"><div class="circle"><?php echo $_SESSION['user_initials'] ?></div></a>
+                <i class="username-topbar"><?php echo $_SESSION['username'] ?></i>
+                <a href="/?action=logout" id="login-link" class="link"><div class="circle"><?php echo $_SESSION['user_initials'] ?></div></a>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
         <h1 class="main-logo"><a href="/?action=projects"><i class="bi-alarm"></i>Clocker</a></h1>
         <a href="/?action=projects"><i class="bi-files"></i>Projekty</a>
         <a href="/?action=history"><i class="bi-clock-history"></i>Historia</a>
-        <a href="/?action=groups"><i class="bi-people"></i>Grupy</a>
+        <a href="/?action=group"><i class="bi-people"></i>Grupy</a>
         <a href="/?action=clients"><i class="bi-cash"></i>Klienci</a>
         <a href="/?action=reports"><i class="bi-file-bar-graph"></i>Raporty</a>
 

@@ -7,7 +7,7 @@ function open_database_connection(): PDO
     // development local database
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
-    //print_r($_ENV);
+
     return new PDO("mysql:host={$_ENV['DB_URL']};dbname={$_ENV['DB_DB']}", "{$_ENV['DB_USER']}", "{$_ENV['DB_PASS']}");
 }
 
@@ -61,42 +61,22 @@ function add_manual_task($userID, $projectID, $taskName, $dateFrom, $dateTo){
 
     $datetimeToConverted = new DateTime($dateTo);
     $datetimeToConverted = $datetimeToConverted->format('Y-m-d H:i:s');
-    $dateduration = $datetimeToConverted - $datetimeFromConverted;
+
     $connection = open_database_connection();
 
-    $statement = $connection->prepare("INSERT INTO Task(userID, projectID, nameTask, startTime, stopTime, duration, status) 
-                        VALUES(:userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, :duration, 'inactive');");
+    $statement = $connection->prepare("INSERT INTO Task(userID, projectID, nameTask, startTime, stopTime, status) 
+                        VALUES(:userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive');");
 
     $statement->bindParam('userID', $userID, PDO::PARAM_INT);
     $statement->bindParam('projectID', $projectID, PDO::PARAM_INT);
     $statement->bindParam('taskName', $taskName);
     $statement->bindParam('datetimeFrom', $datetimeFromConverted);
     $statement->bindParam('datetimeTo', $datetimeToConverted);
-    $statement->bindParam('duration', $dateduration);
+
     $statement->execute();
 
     close_database_connection($connection);
 }
-
-function show_task(){
- 
-    $connection = open_database_connection();
-
-    $statement = $connection->prepare("INSERT INTO Task(userID, projectID, nameTask, startTime, stopTime, duration, status) 
-                        VALUES(:userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, :duration, 'inactive');");
-
-    $statement->bindParam('userID', $userID, PDO::PARAM_INT);
-    $statement->bindParam('projectID', $projectID, PDO::PARAM_INT);
-    $statement->bindParam('taskName', $taskName);
-    $statement->bindParam('datetimeFrom', $datetimeFromConverted);
-    $statement->bindParam('datetimeTo', $datetimeToConverted);
-    $statement->bindParam('duration', $dateduration);
-    $statement->execute();
-
-    close_database_connection($connection);
-}
-
-
 
 function register($username, $firstname, $lastname, $email, $password, $confirm_password) {
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);
