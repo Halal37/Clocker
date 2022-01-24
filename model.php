@@ -19,7 +19,7 @@ function start_task($userID, $taskName) {
     $connection = open_database_connection();
 
     $statement = $connection->prepare("INSERT INTO task (userID, nameTask, startTime, status) 
-                                                VALUES (:userID, :taskName, NOW(), 'inprogress')");
+                                                VALUES (:userID, :taskName, NOW() + INTERVAL 1 HOUR, 'inprogress')");
 
     $statement->bindParam('userID', $userID, PDO::PARAM_INT);
     $statement->bindParam('taskName', $taskName);
@@ -44,7 +44,7 @@ function stop_task() {
     echo $taskId;
     // TODO: zmienić na ID konkretnego użytkownika, żeby nie móc zmienić statusu innemu użytkownikowi
 
-    $statement = $connection->prepare("UPDATE task SET stopTime=NOW(), status='inactive' WHERE id=:taskId");
+    $statement = $connection->prepare("UPDATE task SET stopTime=NOW() + INTERVAL 1 HOUR, status='inactive' WHERE id=:taskId");
     $statement->bindParam('taskId', $taskId, PDO::PARAM_INT);
     $statement->execute();
 
