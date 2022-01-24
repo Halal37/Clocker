@@ -6,13 +6,6 @@ function home_action() {
     require 'templates/home.php';
 }
 
-function projects_details() {
-    require 'templates/project_details.php';
-}
-function projectDetail() {
-    require 'templates/projectDetail.php';
-}
-
 function register_action($username, $firstname, $lastname, $email, $password, $confirm_password) {
     register($username, $firstname, $lastname, $email, $password, $confirm_password);
     require 'templates/register.php';
