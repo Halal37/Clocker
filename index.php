@@ -14,7 +14,7 @@ switch($requested_action) {
         register_action($_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['password'], $_POST['confirm_password']);
         break;
     case "login":
-        login_action("ala", $_POST['password']);
+        login_action($_POST['username'], $_POST['password']);
         break;
     case "logout":
         logout();
