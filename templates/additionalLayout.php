@@ -19,7 +19,8 @@
         <div id="top-bar" style="   <?php if(isset($_COOKIE['activeTaskName'])) : ?>
                                         justify-content: space-between;
                                     <?php else : ?>
-                                        s
+                                            justify-content: flex-end;
+                                 
                                     <?php endif ?>">
 
             <?php if(isset($_COOKIE['activeTaskName'])) : ?>
@@ -35,7 +36,7 @@
                     <i id="addTaskBtn" class="bi-plus-circle-dotted"></i>
                 <?php endif ?>
 
-                <i class="username-topbar"><?php echo $_SESSION['username'] ?></i>
+                <i class="username-topbar"><?php echo $_SESSION['user_name'] ?></i>
                 <a href="/?action=logout" id="login-link" class="link"><div class="circle"><?php echo $_SESSION['user_initials'] ?></div></a>
             </div>
         </div>
