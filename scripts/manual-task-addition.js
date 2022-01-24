@@ -42,7 +42,7 @@ function createTaskPopup(){
     dateTo.className = "modalInput";
     dateTo.placeholder = "Do";
     submitBtn.className = "submitBtn";
-    submitBtn.innerHTML = "<i class='bi-play-circle-fill'></i>";
+    submitBtn.innerHTML = "<a class='button-task' href='/?action=projectDetail'><i class='bi-play-circle-fill'></i></a>";
     exitIcon.className = "exitIcon";
     exitIcon.innerHTML = "<i class='bi-x'></i>";
     iframe.name = "dummyframe";
@@ -79,8 +79,8 @@ function createTaskPopup(){
     })
     //exit popup window
     exitIcon.addEventListener("click", ()=>{
-        document.body.removeChild(background);
-        document.body.removeChild(modal);
+        //document.body.removeChild(background);
+        //document.body.removeChild(modal);
     });
 }
 

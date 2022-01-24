@@ -20,10 +20,20 @@ switch($requested_action) {
         logout();
         break;
     case "projects_details":
+        if(user_logged_in()) {
         projects_details();
+        redirect_home();
+    } else {
+        redirect_login();
+    }
         break;
     case "projectDetail":
+        if(user_logged_in()) {
             projectDetail();
+            redirect_home();
+        } else {
+            redirect_login();
+        }
             break;
     case "password_recover":
         password_recover_action();
