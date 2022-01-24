@@ -354,7 +354,28 @@ main.raport-main{
   background-color: rgba(196, 196, 196, 0.25);
   }
   
+  .project-add{
+      
   
+  display: block;
+  width: 70vw;
+  margin: 20px 0;
+  margin-left: 15rem;
+  position: relative;
+  text-align: left;
+  border-radius: 25px;
+  background-color: rgba(196, 196, 196, 0.25);
+  }
+  .button-detail{
+      text-align: center;
+  }
+  th span{
+      padding-left: 2rem;
+  }
+  button > a{
+    color: black!important;
+    text-transform: uppercase;
+  }
 .project-name{
       font-weight: bold;
       text-align: left;
@@ -369,7 +390,7 @@ main.raport-main{
   }
   
   
-.number-of-tasks{  position: absolute;
+.number-of-tasks, .time{  position: absolute;
       top: 50%;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
@@ -416,6 +437,42 @@ a.button {
       transform: translateY(-50%);
       padding: 6px;
       
+    }
+
+    .button-add{
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+        text-decoration: none;
+        color: initial;
+        position: relative;
+        font-family:"Roboto",sans-serif;
+        text-transform:uppercase;
+        outline: 0;
+        cursor:pointer;
+        color: white;
+        background: red;
+        border-radius: 28px;
+        padding: 10px;
+    }
+    .common-buttons{
+        text-align: end;
+    }
+    .button-project{
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+        text-decoration: none;
+        color: initial;
+        position: relative;
+        font-family:"Roboto",sans-serif;
+        text-transform:uppercase;
+        outline: 0;
+        cursor:pointer;
+        color: white;
+        background: #6200EE;
+        border-radius: 28px;
+        padding: 10px;
     }
 .form button:hover,.form button:active{
       background: #6200EE;
