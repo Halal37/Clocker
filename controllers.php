@@ -13,11 +13,6 @@ function projectDetail() {
     require 'templates/projectDetail.php';
 }
 
-function group_action() {
-    require 'templates/group.php';
-}
-
-
 function register_action($username, $firstname, $lastname, $email, $password, $confirm_password) {
     register($username, $firstname, $lastname, $email, $password, $confirm_password);
     require 'templates/register.php';
