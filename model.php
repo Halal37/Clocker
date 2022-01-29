@@ -180,13 +180,23 @@ function login($username, $password) {
     try{
         $connection = open_database_connection();
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
         $statement = $connection->prepare("SELECT * FROM user where username = :username");
         $statement->bindParam(':username', $username, PDO::PARAM_STR);
         $statement->execute();
         $check=$statement->fetch();
+
+        $statement = $connection->prepare("UPDATE user SET datatime=NOW() + INTERVAL 1 HOUR WHERE id=:id");
+        $statement->bindParam('id', $check['id'], PDO::PARAM_INT);
+        $statement->execute();
+
         if($statement->rowCount()>0){
             if(password_verify($password,$check["password"])) {
                 session_start();
+
+                if ($check["role"] == 'admin') {
+                    $_SESSION["user_role"] = 'admin';
+                }
 
                 $_SESSION["user_login"]=$check["id"];
                 $_SESSION["user_name"]=$check["firstname"] . " " . $check["lastname"];
@@ -213,6 +223,77 @@ function login($username, $password) {
     }
     
      }
+}
+
+function check_admin($id): bool
+{
+    $connection = open_database_connection();
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $statement = $connection->prepare("SELECT role FROM user WHERE id = :id");
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->execute();
+    $check=$statement->fetch();
+    close_database_connection($connection);
+
+    if($check['role'] == 'admin') {
+        return True;
+    }
+    else{
+        return False;
+    }
+}
+
+function get_all_users(): array
+{
+    $connection = open_database_connection();
+
+    $result = $connection->query('SELECT id, username, firstname, lastname, datatime FROM user');
+
+    $users = [];
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $users[] = $row;
+    }
+
+    close_database_connection($connection);
+
+    return $users;
+}
+
+function get_user_by_id($id) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("SELECT * FROM user WHERE id = :id");
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->execute();
+    $user=$statement->fetch();
+
+    close_database_connection($connection);
+
+    return $user;
+}
+
+function delete_user_with_id($id) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("DELETE FROM user WHERE id = :id");
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->execute();
+
+    close_database_connection($connection);
+}
+
+function update_user_with_id($id, $username, $firstname, $lastname, $email) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("UPDATE user SET username=:username, firstname=:firstname, lastname=:lastname, email=:email WHERE id=:id");
+    $statement->bindParam('id', $id, PDO::PARAM_INT);
+    $statement->bindParam('username', $username);
+    $statement->bindParam('firstname', $firstname);
+    $statement->bindParam('lastname', $lastname);
+    $statement->bindParam('email', $email);
+    $statement->execute();
+
+    close_database_connection($connection);
 }
 
 function logout(){

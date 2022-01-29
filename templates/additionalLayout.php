@@ -13,18 +13,24 @@
 
 <body>
     <header>
-        <h1><a href="/?action=projects"><i class="bi-alarm"></i>Clocker</a></h1>
+
+<!--        style="   --><?php //if(isset($_COOKIE['activeTaskName'])) : ?>
+<!--            width: calc(100% - 330px);-->
+<!--            justify-content: space-between;-->
+<!--        --><?php //else : ?>
+<!--            justify-content: flex-end;-->
+<!--        --><?php //endif ?><!--"-->
 
         <!--  Dodawanie nowego zadania, start i stop czasu  -->
-        <div id="top-bar" style="   <?php if(isset($_COOKIE['activeTaskName'])) : ?>
-                                        justify-content: space-between;
-                                    <?php else : ?>
-                                        justify-content: flex-end;
-                                    <?php endif ?>">
+        <div id="top-bar" >
 
-            <?php if(isset($_COOKIE['activeTaskName'])) : ?>
-                <p id="activeTaskTitle"><?= $_COOKIE['activeTaskName'] ?></p>
-            <?php endif ?>
+            <div id="topbar-left-section">
+                <i class="bi-list" id="openMenuBtn"></i>
+
+                <?php if(isset($_COOKIE['activeTaskName'])) : ?>
+                    <p id="activeTaskTitle"><?= $_COOKIE['activeTaskName'] ?></p>
+                <?php endif ?>
+            </div>
 
             <div id="link-section">
 
@@ -41,19 +47,38 @@
         </div>
 
     </header>
-    <nav>
+
+    <nav id="mobile-menu" style="display: none">
+        <i class="bi-x" id="close-menu-btn"></i>
         <h1 class="main-logo"><a href="/?action=projects"><i class="bi-alarm"></i>Clocker</a></h1>
         <a href="/?action=projects"><i class="bi-files"></i>Projekty</a>
         <a href="/?action=history"><i class="bi-clock-history"></i>Historia</a>
-        <a href="/?action=groups"><i class="bi-people"></i>Grupy</a>
         <a href="/?action=clients"><i class="bi-cash"></i>Klienci</a>
         <a href="/?action=reports"><i class="bi-file-bar-graph"></i>Raporty</a>
-
-
+        <?php if($_SESSION["user_role"] == 'admin') : ?>
+            <a href="/?action=admin"><i class="bi-people-fill"></i>Administracja</a>
+        <?php endif ?>
     </nav>
-    <?= $content ?>
+
+    <nav id="desktop-menu">
+        <h1 class="main-logo"><a href="/?action=projects"><i class="bi-alarm"></i>Clocker</a></h1>
+        <a href="/?action=projects"><i class="bi-files"></i>Projekty</a>
+        <a href="/?action=history"><i class="bi-clock-history"></i>Historia</a>
+        <a href="/?action=clients"><i class="bi-cash"></i>Klienci</a>
+        <a href="/?action=reports"><i class="bi-file-bar-graph"></i>Raporty</a>
+        <?php if($_SESSION["user_role"] == 'admin') : ?>
+        <a href="/?action=admin"><i class="bi-people-fill"></i>Administracja</a>
+        <?php endif ?>
+    </nav>
+
+    <main>
+        <div class="main-content">
+            <?= $content ?>
+        </div>
+    </main>
     <script src="../scripts/time-tracking.js"></script>
     <script src="../scripts/manual-task-addition.js"></script>
+    <script src="../scripts/mobileMenu.js"></script>
 </body>
 
 </html>

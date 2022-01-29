@@ -21,7 +21,7 @@ function createTaskPopup(){
     let iframe = document.createElement("iframe");
 
     background.className = "addTaskBackground";
-    modal.className = "addTaskModal"
+    modal.className = "manualAddTaskModal"
     modalTitle.className = "modalTitle";
     modalTitle.innerText = "Śledź nowe zadanie!";
     modalForm.className = "modalForm";

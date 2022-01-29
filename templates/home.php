@@ -1,7 +1,6 @@
 <?php $title = 'Clocker' ?>
 
 <?php ob_start() ?>
-<main>
     <div id="app-description">
         <img src="https://c.pxhere.com/images/af/aa/ad86cc1ba66dce75a8c1d8dc2234-1640636.jpg!d" id="desc-img" alt="obrazek-mierzenia-czasu">
         <p id="desc">Croissant danish ice cream jelly cake. Wafer halvah gummies cake pie. Candy canes apple pie
@@ -48,7 +47,6 @@
             </div>
         </div>
     </div>
-</main>
 
 <div id="cookie-alert">
     <div id="cookie-content">
