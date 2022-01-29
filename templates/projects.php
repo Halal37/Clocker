@@ -1,6 +1,6 @@
-<?php $title = 'Clocker' ?>
+<?php $title = 'Clocker'?>
 
-<?php ob_start() ?>
+<?php ob_start()?>
     <main>
     <div class="projects-page">
         <div class="project">
@@ -8,7 +8,7 @@
                 <div class="project-name">Projekt 1</div>
 
                 <div class="number-of-tasks">Lista zadań: 5</div>
-                <div class="client-name">Klient: XXX</div>
+                <div class="clients">Klient: XXX</div>
                 <a href="#" class="button">Szczegóły</a>
             </form>
 
@@ -16,6 +16,6 @@
         </div>
     </div>
     <main>
-<?php $content = ob_get_clean() ?>
+<?php $content = ob_get_clean()?>
 
-<?php include 'additionalLayout.php' ?>
+<?php include 'additionalLayout.php'?>
