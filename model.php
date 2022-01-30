@@ -407,15 +407,16 @@ function client()
     ?>
 
     <?php
-foreach ($row as $i) {
-        ?>  <form name="clientForm" action="/?action=clients_details" method="POST">
-            <a  id="login-link" class="link"><div class="circle-client"><?php echo substr($i["clientname"], 0, 1); ?></div></a>
-            <div class="client-name">
+            foreach ($row as $i) {
+            ?>
+                <form name="clientForm" class="client-form" action="/?action=clients_details" method="POST">
+                <a  id="login-link" class="link"><div class="circle-client"><?php echo substr($i["clientname"], 0, 1); ?></div></a>
+                <div class="client-name">
 
-            <?php echo $i["clientname"]; ?>
+                <?php echo $i["clientname"]; ?>
 
-            <input type="hidden" name="details" value=<?php echo $i["id"]; ?>>
-            <button type="submit" class="button-client">Szczegóły</a></div>
+                <input type="hidden" name="details" value=<?php echo $i["id"]; ?>>
+                <button type="submit" class="button-client">Szczegóły</button></div>
             </form>
 
     <?php

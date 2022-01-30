@@ -149,6 +149,9 @@ button > a {
     padding: 40px 40px 0 40px;
     width: calc(100% - 80px);
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .main-logo{
     position: relative;
@@ -348,6 +351,9 @@ main.raport-main{
   border-radius: 25px;
   background-color: rgba(196, 196, 196, 0.25);
   }
+.projects-page {
+    width: 700px;
+}
 .project-add{
 
 
@@ -386,18 +392,6 @@ background-color: rgba(196, 196, 196, 0.25);
       padding: 1% 2%;
       font-weight: bold;
   }
-
-  
-.clients{    
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  left: 49%;
-  font-weight: bold;
-}
-
 a.button {
       text-decoration: none;
       position: absolute;
@@ -448,6 +442,218 @@ a.button {
 .form button:hover,.form button:active{
       background: #6200EE;
   }
+
+/* CLIENTS */
+.clients-page {
+    width: 700px;
+}
+.clients{
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: 49%;
+    font-weight: bold;
+}
+a.buttonclient {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    text-decoration: none;
+    position: relative;
+    font-family: "Roboto",sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    cursor: pointer;
+    color: white;
+    background: #6200EE;
+    border-radius: 28px;
+    padding: 10px;
+    margin-top: 50px;
+}
+.client{
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    text-align: left;
+    border-radius: 25px;
+    background-color: rgba(196, 196, 196, 0.25);
+    padding-bottom: 20px;
+}
+.client-name{
+    font-weight: bold;
+    text-align: left;
+    position: relative;
+    left: 44px;
+    top: 22px;
+    padding: 10px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+a.button-client {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+    position: absolute;
+    font-family:"Roboto",sans-serif;
+    text-transform:uppercase;
+    outline: 0;
+
+    cursor:pointer;
+
+    color: white;
+    background: #6200EE;
+    border-radius: 28px;
+    left: 79%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-150%);
+    padding: 7px;
+
+}
+.client-form {
+    padding: 10px;
+}
+button.button-client {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    text-decoration: none;
+    position: absolute;
+    font-family: "Roboto",sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    color: white;
+    background: #6200EE;
+    border-radius: 28px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-30%);
+    padding: 7px;
+    right: 60px;
+
+}
+.client-name-title{
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    font-size: 185%;
+    top: 30px;
+    padding: 10px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.client-name-details{
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    font-size: 145%;
+    top: 15px;
+    padding: 10px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.circle-client{
+    position: absolute;
+    margin-top: -8px;
+    left: 15px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    color: #7267CB;
+    text-align: center;
+    background: #fff;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(50%);
+}
+.client-detail{
+    font-weight: bold;
+    text-align: left;
+    position: relative;
+    top: 2vw;
+    padding: 15px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-top: 1px solid black;
+}
+.client-description{
+    text-align: center;
+    position: relative;
+    top: 5px;
+    padding: 10px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+}
+.input-client{
+
+    text-align:center;
+}
+.input-client2{
+
+    line-height: 68px;
+}
+.login-button {
+    font-family:"Roboto",sans-serif;
+    text-transform:uppercase;
+    outline: 0;
+    width: 40%;
+    border: 0;
+    padding: 10px;
+    font-size:14px;
+    cursor:pointer;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    color: white;
+    background: #6200EE;
+    border-radius: 28px;
+}
+.client input{
+    font-family: "Roboto", sans-serif;
+    border-radius: 20px;
+    outline: #6200EE solid 2px;
+    background: rgba(196, 196, 196, 0.25);
+    width: 60%;
+    border: 0;
+    margin: 0 0 25px;
+    padding: 15px;
+    box-sizing: border-box;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(40%);
+
+}
+.buttonclientadd {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    text-decoration: none;
+    position: relative;
+    font-family: "Roboto",sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    cursor: pointer;
+    color: white;
+    background: #6200EE;
+    border-radius: 28px;
+    padding: 10px;
+    width: 80px;
+    text-align: center;
+    margin: 50px auto 20px;
+}
 
 /* MOBILE MENU */
 #openMenuBtn {
@@ -512,251 +718,24 @@ a.button {
         width: 100px;
     }
 }
-
-a.buttonclient {
-    -webkit-appearance: button;
-    -moz-appearance: button;
-    appearance: button;
-
-    text-decoration: none;
-    color: initial;
-    position: absolute;
-    bottom: 2%;
-    left: 50%;
-
-    font-family:"Roboto",sans-serif;
-    text-transform:uppercase;
-    outline: 0;
-
-    cursor:pointer;
-
-    color: white;
-    background: #6200EE;
-    border-radius: 28px;
-    padding: 6px;
-    
-  }
-
-
-
-  .client{
-  
-  
-    display: block;
-    width: 60vw;
-    height: auto;
-    margin: 20px 0;
-    margin-left: 15rem;
-    position: relative;
-    
-    text-align: left;
-    border-radius: 25px;
-    background-color: rgba(196, 196, 196, 0.25);
-    }
-
-    .client-name{
-        font-weight: bold;
-        text-align: left;
-        position: relative;
-        left: 6%;
-        top: 2vw;
-        padding: 2%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-        
-        
-       
-    }
-    a.button-client {
-        -webkit-appearance: button;
-        -moz-appearance: button;
-        appearance: button;
-    
-        text-decoration: none;
-        color: initial;
-        position: absolute;
-        font-family:"Roboto",sans-serif;
-        text-transform:uppercase;
-        outline: 0;
-    
-        cursor:pointer;
-    
-        color: white;
-        background: #6200EE;
-        border-radius: 28px;
-        left: 79%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-150%);
-        padding: 7px;
-        
-      }
-      
-      button.button-client {
-        -webkit-appearance: button;
-        -moz-appearance: button;
-        appearance: button;
-    
-        text-decoration: none;
-        color: initial;
-        position: absolute;
-        font-family:"Roboto",sans-serif;
-        text-transform:uppercase;
-        outline: 0;
-        border: 0;
-        cursor:pointer;
-    
-        color: white;
-        background: #6200EE;
-        border-radius: 28px;
-        left: 79%;
-     
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-30%);
-        padding: 7px;
-        
-    }
-    .client-name-title{
-    
-        font-weight: bold;
-        text-align: center;
-        position: relative;
-        font-size: 185%;
-        top: 2vw;
-        padding: 2%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-    }
-    .client-name-details{
-        font-weight: bold;
-        text-align: center;
-        position: relative;
-        font-size: 145%;
-        top: 1vw;
-        padding: 2%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-    }
-    .circle-client{
-        
-        position: absolute;
-        left: 2%;
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        border-radius: 50%;
-        color: #7267CB;
-        text-align: center;
-        background: #fff;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(50%);
-          
-    }
-
-    .client-detail{
-        font-weight: bold;
-        text-align: left;
-        position: relative;
-        top: 2vw;
-        padding: 3%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-        border-top: 1px solid black;
-        
-       
-    }
-    .client-description{
-        text-align: center;
-        position: relative;
-        top: 1vw;
-        padding: 3%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-        
-    }
-    .input-client{
-        
-        text-align:center;
-    }
-    .input-client2{
-        
-        line-height: 68px;
-    }
-    .login-button {
-        font-family:"Roboto",sans-serif;
-        text-transform:uppercase;
-        outline: 0;
-        width: 40%;
-        border: 0;
-        padding: 10px;
-        font-size:14px;
-        cursor:pointer;
-        margin-top: 40px;
-        margin-bottom: 10px;
-        color: white;
-        background: #6200EE;
-        border-radius: 28px;
-      }
-      .client input{
-        font-family: "Roboto", sans-serif;
-        outline: 1;
-        outline-style: solid;
-        outline-color:#6200EE;
-        background:  rgba(196, 196, 196, 0.25);
-        width: 60%;
-        border: 0;
-        
-        margin: 0 0 5%;
-        padding: 15px;
-        box-sizing: border-box;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(40%);
-    
-    }
-
-    .buttonclientadd {
-        -webkit-appearance: button;
-        -moz-appearance: button;
-        appearance: button;
-    
-        text-decoration: none;
-        color: initial;
-        position: relative;
-        bottom: 2%;
-        left: 50%;
-    
-        font-family:"Roboto",sans-serif;
-        text-transform:uppercase;
-        outline: 0;
-    
-        cursor:pointer;
-        width: 7.5%;
-        color: white;
-        background: #6200EE;
-        border-radius: 28px;
-        padding: 10px;
-        transform: translateY(700%);
-        
-      }
-
 @media screen and (max-width:960px){
     main.raport-main{
         grid-template-rows: none!important;
         margin-left:25vw;
     }
 }
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1050px){
     #app-description{
         grid-template-columns: 1fr;
         row-gap: 40px;
+    }
+
+    .clients-page {
+        width: 100%;
+    }
+
+    .projects-page {
+        width: 100%;
     }
 }
 @media screen and (max-width:750px) {
@@ -786,4 +765,14 @@ a.buttonclient {
     .username-topbar {
         display: none;
     }
+
+    .client, .clients-page {
+        width: 100%;
+    }
+
+    .input-client input {
+        width: 90%;
+    }
+
+
 }
