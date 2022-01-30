@@ -44,16 +44,21 @@ function stop_task()
     $connection = open_database_connection();
 
     $taskId = $_COOKIE['activeTaskId'];
-    echo $taskId;
-    // TODO: zmienić na ID konkretnego użytkownika, żeby nie móc zmienić statusu innemu użytkownikowi
 
-    $statement = $connection->prepare("UPDATE task SET stopTime=NOW() + INTERVAL 1 HOUR, status='inactive' WHERE id=:taskId");
-    $statement->bindParam('taskId', $taskId, PDO::PARAM_INT);
+    $statement = $connection->prepare("SELECT userID, nameTask FROM task WHERE id=:taskId");
+    $statement->bindParam(':taskId', $taskId);
     $statement->execute();
+    $result=$statement->fetch();
 
-    setcookie("activeTaskId", "", time() - 3600);
-    setcookie("activeTaskName", "", time() - 3600);
-    setcookie("activeTaskStartTime", "", time() - 3600);
+    if($result['userID'] == $_SESSION['user_login']) {
+        $statement = $connection->prepare("UPDATE task SET stopTime=NOW() + INTERVAL 1 HOUR, status='inactive', duration=TIMEDIFF(stopTime, startTime) WHERE id=:taskId");
+        $statement->bindParam('taskId', $taskId, PDO::PARAM_INT);
+        $statement->execute();
+
+        setcookie("activeTaskId", "", time() - 3600);
+        setcookie("activeTaskName", "", time() - 3600);
+        setcookie("activeTaskStartTime", "", time() - 3600);
+    }
 
     close_database_connection($connection);
 }
@@ -68,15 +73,14 @@ function add_manual_task($userID, $projectID, $taskName, $dateFrom, $dateTo)
 
     $connection = open_database_connection();
 
-    $statement = $connection->prepare("INSERT INTO Task(userID, projectID, nameTask, startTime, stopTime, status)
-                        VALUES(:userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive');");
+    $statement = $connection->prepare("INSERT INTO Task(userID, projectID, nameTask, startTime, stopTime, status, duration) 
+                        VALUES(:userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive', TIMEDIFF(stopTime, startTime));");
 
     $statement->bindParam('userID', $userID, PDO::PARAM_INT);
     $statement->bindParam('projectID', $projectID, PDO::PARAM_INT);
     $statement->bindParam('taskName', $taskName);
     $statement->bindParam('datetimeFrom', $datetimeFromConverted);
     $statement->bindParam('datetimeTo', $datetimeToConverted);
-
     $statement->execute();
 
     close_database_connection($connection);
@@ -181,27 +185,37 @@ function login($username, $password)
 {
     error_reporting(E_ERROR | E_PARSE);
 
-    if (!empty($username) && !empty($password)) {
-        try {
-            $connection = open_database_connection();
-            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $statement = $connection->prepare("SELECT * FROM user where username = :username");
-            $statement->bindParam(':username', $username, PDO::PARAM_STR);
-            $statement->execute();
-            $check = $statement->fetch();
-            if ($statement->rowCount() > 0) {
-                if (password_verify($password, $check["password"])) {
-                    session_start();
+    if (!empty($username) && !empty($password)){
+    try{
+        $connection = open_database_connection();
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    $_SESSION["user_login"] = $check["id"];
-                    $_SESSION["user_name"] = $check["firstname"] . " " . $check["lastname"];
+        $statement = $connection->prepare("SELECT * FROM user where username = :username");
+        $statement->bindParam(':username', $username, PDO::PARAM_STR);
+        $statement->execute();
+        $check=$statement->fetch();
 
-                    $words = explode(" ", $_SESSION["user_name"]);
-                    $initials = "";
+        $statement = $connection->prepare("UPDATE user SET datatime=NOW() + INTERVAL 1 HOUR WHERE id=:id");
+        $statement->bindParam('id', $check['id'], PDO::PARAM_INT);
+        $statement->execute();
 
-                    foreach ($words as $w) {
-                        $initials .= $w[0];
-                    }
+        if($statement->rowCount()>0){
+            if(password_verify($password,$check["password"])) {
+                session_start();
+
+                if ($check["role"] == 'admin') {
+                    $_SESSION["user_role"] = 'admin';
+                }
+
+                $_SESSION["user_login"]=$check["id"];
+                $_SESSION["user_name"]=$check["firstname"] . " " . $check["lastname"];
+
+                $words = explode(" ", $_SESSION["user_name"]);
+                $initials = "";
+
+                foreach ($words as $w) {
+                    $initials .= $w[0];
+                }
 
                     $_SESSION["user_initials"] = $initials;
 
@@ -220,8 +234,127 @@ function login($username, $password)
     }
 }
 
-function logout()
+function check_admin($id): bool
 {
+    $connection = open_database_connection();
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $statement = $connection->prepare("SELECT role FROM user WHERE id = :id");
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->execute();
+    $check=$statement->fetch();
+    close_database_connection($connection);
+
+    if($check['role'] == 'admin') {
+        return True;
+    }
+    else{
+        return False;
+    }
+}
+
+function count_users() {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("SELECT count(*) as user_count FROM user");
+    $statement->execute();
+    $count=$statement->fetch();
+
+    close_database_connection($connection);
+
+    return $count;
+}
+
+function get_durations(): array
+{
+    $connection = open_database_connection();
+
+    $times = [];
+
+    $statement = $connection->prepare("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) AS total_last_week FROM task 
+            WHERE stopTime BETWEEN date_sub(now(),INTERVAL 1 WEEK) AND now();");
+    $statement->execute();
+    $total_last_week=$statement->fetch();
+    $times[] = $total_last_week;
+
+    $statement = $connection->prepare("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) AS total_last_month FROM task 
+            WHERE stopTime BETWEEN date_sub(now(),INTERVAL 1 MONTH) AND now();");
+    $statement->execute();
+    $total_last_month=$statement->fetch();
+    $times[] = $total_last_month;
+
+    $statement = $connection->prepare("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) AS total_last_year FROM task 
+            WHERE stopTime BETWEEN date_sub(now(),INTERVAL 1 YEAR) AND now();");
+    $statement->execute();
+    $total_last_year=$statement->fetch();
+    $times[] = $total_last_year;
+
+    $statement = $connection->prepare("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) AS total_time FROM task;");
+    $statement->execute();
+    $total_time=$statement->fetch();
+    $times[] = $total_time;
+
+
+    close_database_connection($connection);
+
+    return $times;
+}
+
+function get_all_users(): array
+{
+    $connection = open_database_connection();
+
+    $result = $connection->query(
+        'SELECT u.id, u.username, SEC_TO_TIME(SUM(TIME_TO_SEC(t.duration))) AS total_time,u.datatime 
+                    FROM user AS `u` LEFT JOIN task AS `t` ON t.userID=u.id GROUP BY u.id;');
+
+    $users = [];
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $users[] = $row;
+    }
+
+    close_database_connection($connection);
+
+    return $users;
+}
+
+function get_user_by_id($id) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("SELECT * FROM user WHERE id = :id");
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->execute();
+    $user=$statement->fetch();
+
+    close_database_connection($connection);
+
+    return $user;
+}
+
+function delete_user_with_id($id) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("DELETE FROM user WHERE id = :id");
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->execute();
+
+    close_database_connection($connection);
+}
+
+function update_user_with_id($id, $username, $firstname, $lastname, $email) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("UPDATE user SET username=:username, firstname=:firstname, lastname=:lastname, email=:email WHERE id=:id");
+    $statement->bindParam('id', $id, PDO::PARAM_INT);
+    $statement->bindParam('username', $username);
+    $statement->bindParam('firstname', $firstname);
+    $statement->bindParam('lastname', $lastname);
+    $statement->bindParam('email', $email);
+    $statement->execute();
+
+    close_database_connection($connection);
+}
+
+function logout(){
     session_start();
     setcookie("PHPSESSID", "", time() - 3600);
     session_destroy();

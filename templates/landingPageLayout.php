@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<header>
+<header class="landing-header">
     <h1><a href="/?action=home"><i class="bi-alarm"></i>Clocker</a></h1>
 
     <div id="link-section">

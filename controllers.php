@@ -2,8 +2,10 @@
 
 use JetBrains\PhpStorm\NoReturn;
 
-function home_action()
-{
+
+function home_action() {
+    $user_count = count_users();
+    $durations = get_durations();
     require 'templates/home.php';
 }
 
@@ -65,6 +67,44 @@ function clients_add_action($clientname, $description)
 {
     clients_add($clientname, $description);
     require 'templates/clients_add.php';
+}
+
+function admin_action($id) {
+    if(check_admin($id)) {
+        $users = get_all_users();
+        require 'templates/admin.php';
+    } else {
+        redirect_home();
+    }
+}
+
+function edit_user_action($id, $userId) {
+    if(check_admin($id)) {
+        $user = get_user_by_id($userId);
+        require 'templates/userEdit.php';
+    } else {
+        redirect_home();
+    }
+}
+
+#[NoReturn] function update_user_action($loggedId, $userId, $username, $firstname, $lastname, $email) {
+    if(check_admin($loggedId)) {
+        update_user_with_id($userId, $username, $firstname, $lastname, $email);
+        header( "Location: /?action=admin", true, 302);
+        exit;
+    } else {
+        redirect_home();
+    }
+}
+
+#[NoReturn] function delete_user_action($id, $userId) {
+    if(check_admin($id)) {
+        delete_user_with_id($userId);
+        header( "Location: /?action=admin", true, 302);
+        exit;
+    } else {
+        redirect_home();
+    }
 }
 
 #[NoReturn]function redirect_home()

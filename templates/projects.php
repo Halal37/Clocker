@@ -1,7 +1,7 @@
 <?php $title = 'Clocker'?>
 
-<?php ob_start()?>
-    <main>
+
+<?php ob_start() ?>
     <div class="projects-page">
         <div class="project">
           <form class="project-main-form">
@@ -15,7 +15,7 @@
 
         </div>
     </div>
-    <main>
-<?php $content = ob_get_clean()?>
+
+<?php $content = ob_get_clean() ?>
 
 <?php include 'additionalLayout.php'?>

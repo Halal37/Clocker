@@ -74,6 +74,35 @@ switch ($requested_action) {
             redirect_login();
         }
         break;
+    case "admin":
+        if(user_logged_in()) {
+            admin_action($_SESSION["user_login"]);
+        } else {
+            redirect_login();
+        }
+        break;
+    case "editUser":
+        if(user_logged_in()) {
+            edit_user_action($_SESSION["user_login"], $_GET['id']);
+        } else {
+            redirect_login();
+        }
+        break;
+    case "updateUser":
+        if(user_logged_in()) {
+            update_user_action($_SESSION["user_login"], $_GET['id'], $_POST['username'], $_POST['firstname'], $_POST['lastname'], $_POST['email']);
+        } else {
+            redirect_login();
+        }
+        break;
+    
+    case "deleteUser":
+        if(user_logged_in()) {
+            delete_user_action($_SESSION["user_login"], $_GET['id']);
+        } else {
+            redirect_login();
+        }
+        break;
     default:
         header('HTTP/1.1 404 Not Found');
         echo '<html><body><h1>Page Not Found!</h1></body></html>';
