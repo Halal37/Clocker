@@ -6,7 +6,7 @@ require_once 'controllers.php';
 
 $requested_action = $_GET['action'] ?? 'home';
 
-switch($requested_action) {
+switch ($requested_action) {
     case "home":
         home_action();
         break;
@@ -23,7 +23,7 @@ switch($requested_action) {
         password_recover_action();
         break;
     case "startTask":
-        if(user_logged_in()) {
+        if (user_logged_in()) {
             start_task_action($_POST['title'], $_POST['project']);
             redirect_home();
         } else {
@@ -31,7 +31,7 @@ switch($requested_action) {
         }
         break;
     case "stopTask":
-        if(user_logged_in()) {
+        if (user_logged_in()) {
             stop_task_action();
             redirect_home();
         } else {
@@ -39,7 +39,7 @@ switch($requested_action) {
         }
         break;
     case "addManualTask":
-        if(user_logged_in()) {
+        if (user_logged_in()) {
             add_manual_task_action($_POST['title'], $_POST['project'], $_POST['dateFrom'], $_POST['dateTo']);
             redirect_home();
         } else {
@@ -47,8 +47,29 @@ switch($requested_action) {
         }
         break;
     case "projects":
-        if(user_logged_in()) {
+        if (user_logged_in()) {
             projects_action();
+        } else {
+            redirect_login();
+        }
+        break;
+    case "clients":
+        if (user_logged_in()) {
+            clients_action();
+        } else {
+            redirect_login();
+        }
+        break;
+    case "clients_add":
+        if (user_logged_in()) {
+            clients_add_action($_POST['clientname'], $_POST['description']);
+        } else {
+            redirect_login();
+        }
+        break;
+    case "clients_details":
+        if (user_logged_in()) {
+            clients_details_action($_POST['details']);
         } else {
             redirect_login();
         }
@@ -74,6 +95,7 @@ switch($requested_action) {
             redirect_login();
         }
         break;
+    
     case "deleteUser":
         if(user_logged_in()) {
             delete_user_action($_SESSION["user_login"], $_GET['id']);
