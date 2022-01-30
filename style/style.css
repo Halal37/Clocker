@@ -536,6 +536,10 @@ a.button {
         display: block;
     }
 
+    .landing-header {
+        flex-direction: column;
+    }
+
     main {
         left: 0;
         width: 100%;

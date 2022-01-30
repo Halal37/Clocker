@@ -18,7 +18,7 @@
       <?php foreach ($users as $user): ?>
         <tr>
           <td><?= $user['username'] ?></td>
-          <td>21h 30m</td>
+          <td><?= $user['total_time'] ?></td>
           <td><?= $user['datatime'] ?></td>
           <td><button type="button">
                   <a href="/?action=editUser&id=<?= $user['id'] ?>">

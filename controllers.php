@@ -3,6 +3,8 @@
 use JetBrains\PhpStorm\NoReturn;
 
 function home_action() {
+    $user_count = count_users();
+    $durations = get_durations();
     require 'templates/home.php';
 }
 

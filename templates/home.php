@@ -14,34 +14,34 @@
         <h2>Statystyki użytkowników</h2>
         <div id="user-stats-content">
             Zobacz jak nasi użytkownicy korzystają z clockera!
-            Jest już z nami <i id="users-number">2303</i> użytkowników!
+            Jest już z nami <?= $user_count['user_count'] ?> użytkowników!
         </div>
 
         <div id="user-stats-main-container">
             <div class="user-stat-container">
                 <div class="user-stat">
-                    <p id="week-stat" class="stat-title">100 h</p>
-                    <p class="stat-desc">w tym tygodniu</p>
+                    <p id="week-stat" class="stat-title"><?= $durations[0]['total_last_week'] ?></p>
+                    <p class="stat-desc">w ostatnim tygodniu</p>
                 </div>
             </div>
 
             <div class="user-stat-container">
                 <div class="user-stat">
-                    <p id="month-stat" class="stat-title">1 000 h</p>
-                    <p class="stat-desc">w tym miesiącu</p>
+                    <p id="month-stat" class="stat-title"><?= $durations[1]['total_last_month'] ?></p>
+                    <p class="stat-desc">w ostatnim miesiącu</p>
                 </div>
             </div>
 
             <div class="user-stat-container">
                 <div class="user-stat">
-                    <p id="year-stat" class="stat-title">10 000 h</p>
-                    <p class="stat-desc">w tym roku</p>
+                    <p id="year-stat" class="stat-title"><?= $durations[2]['total_last_year'] ?></p>
+                    <p class="stat-desc">w ostatnim roku</p>
                 </div>
             </div>
 
             <div class="user-stat-container">
                 <div class="user-stat">
-                    <p id="all-stat" class="stat-title">100 000 h</p>
+                    <p id="all-stat" class="stat-title"><?= $durations[3]['total_time'] ?></p>
                     <p class="stat-desc">od początku</p>
                 </div>
             </div>
