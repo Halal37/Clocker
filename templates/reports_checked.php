@@ -2,10 +2,10 @@
 
 <?php ob_start() ?>
 
-<main class="raport-main">
+<div class="raport-main">
     <p>Wygenerowano pomyślnie raport</p>
     <i class="bi-check2"></i>
-</main>
+</div>
 
 <?php $content = ob_get_clean() ?>
 

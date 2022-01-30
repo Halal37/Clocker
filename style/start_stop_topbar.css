@@ -1,8 +1,9 @@
 #top-bar {
-    width: calc(100% - 250px);
+    width: calc(100% - 330px);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-right: 30px;
 }
 
 #addTaskBtn {
@@ -23,6 +24,12 @@
     color: white;
 }
 
+#topbar-left-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .addTaskBackground {
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
@@ -30,18 +37,33 @@
     left: 0;
     height: 100%;
     width: 100%;
+    z-index: 4;
 }
 
 .addTaskModal {
     position: fixed;
     background-color: white;
     border-radius: 50px;
-    width: 700px;
-    height: 750px;
+    width: 550px;
+    height: 550px;
     margin: 0;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 5;
+}
+
+.manualAddTaskModal {
+    position: fixed;
+    background-color: white;
+    border-radius: 50px;
+    width: 550px;
+    height: 650px;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
 }
 
 .modalTitle {
