@@ -3,17 +3,23 @@
 
 <?php ob_start() ?>
     <div class="projects-page">
-        <div class="project">
-          <form class="project-main-form">
-                <div class="project-name">Projekt 1</div>
+        <?php foreach ($projects as $project): ?>
+            <div class="project">
+                <form class="project-main-form">
+                    <div class="project-name"><?= $project['projectName'] ?></div>
+                    <div class="number-of-tasks">Liczba zadań: <?= $project['task_count'] ?></div>
+                    <div class="clients">Klient: <?= $project['clientname'] ?></div>
+                    <a class="button" href="/?action=projectDetails&id=<?= $project['id'] ?>">
+                        Szczegóły
+                    </a>
+                </form>
+            </div>
+        <?php endforeach ?>
 
-                <div class="number-of-tasks">Lista zadań: 5</div>
-                <div class="clients">Klient: XXX</div>
-                <a href="#" class="button">Szczegóły</a>
-            </form>
+        <a class="button add-project-btn" href="/?action=addProject">
+            Dodaj projekt
+        </a>
 
-
-        </div>
     </div>
 
 <?php $content = ob_get_clean() ?>

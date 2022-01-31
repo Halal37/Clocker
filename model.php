@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 function open_database_connection(): PDO
@@ -16,15 +18,16 @@ function close_database_connection(&$connection)
     $connection = null;
 }
 
-function start_task($userID, $taskName)
+function start_task($userID, $taskName, $taskProject)
 {
     $connection = open_database_connection();
 
-    $statement = $connection->prepare("INSERT INTO task (userID, nameTask, startTime, status)
-                                                VALUES (:userID, :taskName, NOW() + INTERVAL 1 HOUR, 'inprogress')");
+    $statement = $connection->prepare("INSERT INTO task (userID, projectID, nameTask, startTime, status)
+                                                VALUES (:userID, :projectID, :taskName, NOW() + INTERVAL 1 HOUR, 'inprogress')");
 
     $statement->bindParam('userID', $userID, PDO::PARAM_INT);
     $statement->bindParam('taskName', $taskName);
+    $statement->bindParam('projectID', $taskProject);
     $statement->execute();
 
     $addedTaskId = $connection->lastInsertId();
@@ -73,7 +76,7 @@ function add_manual_task($userID, $projectID, $taskName, $dateFrom, $dateTo)
 
     $connection = open_database_connection();
 
-    $statement = $connection->prepare("INSERT INTO Task(userID, projectID, nameTask, startTime, stopTime, status, duration) 
+    $statement = $connection->prepare("INSERT INTO task(userID, projectID, nameTask, startTime, stopTime, status, duration) 
                         VALUES(:userID, :projectID, :taskName, :datetimeFrom, :datetimeTo, 'inactive', TIMEDIFF(stopTime, startTime));");
 
     $statement->bindParam('userID', $userID, PDO::PARAM_INT);
@@ -354,6 +357,82 @@ function update_user_with_id($id, $username, $firstname, $lastname, $email) {
     close_database_connection($connection);
 }
 
+function get_all_projects($id): array
+{
+    $connection = open_database_connection();
+
+    $result = $connection->query(
+        "SELECT p.id, p.projectName, COUNT(t.id) AS 'task_count', c.clientname 
+                FROM project AS p
+                LEFT JOIN task AS t ON p.id=t.projectID
+                LEFT JOIN client AS c ON p.clientID=c.id
+                WHERE p.userID=$id
+                GROUP BY p.id;");
+
+    $projects = [];
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $projects[] = $row;
+    }
+
+    close_database_connection($connection);
+
+    return $projects;
+}
+
+function get_project_by_id($id) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare(
+            "SELECT 
+                        p.id,
+                        p.projectName, 
+                        SEC_TO_TIME(SUM(TIME_TO_SEC(t.duration))) AS total_time,
+                        c.clientname,
+                        p.rate,
+                        (SEC_TO_TIME(SUM(TIME_TO_SEC(t.duration))) * p.rate) AS money_sum
+                    FROM project as p
+                    LEFT JOIN task as t ON p.id=t.projectID
+                    LEFT JOIN client as c ON p.clientID=c.id
+                    WHERE p.id=:id;"
+    );
+
+    $statement->bindParam(':id', $id, PDO::PARAM_STR);
+    $statement->execute();
+    $project=$statement->fetch();
+
+    close_database_connection($connection);
+
+    return $project;
+}
+
+function get_tasks_by_project_id($id): array
+{
+    $connection = open_database_connection();
+
+    $result = $connection->query(
+        "SELECT * FROM task WHERE projectID=$id");
+
+    $tasks = [];
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $tasks[] = $row;
+    }
+
+    close_database_connection($connection);
+
+    return $tasks;
+}
+
+function delete_project($id)
+{
+    $connection = open_database_connection();
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $query = "DELETE FROM project where id= :id";
+    $stmt = $connection->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    close_database_connection($connection);
+}
+
 function logout(){
     session_start();
     setcookie("PHPSESSID", "", time() - 3600);
@@ -454,4 +533,81 @@ foreach ($row as $i) {
 }
     close_database_connection($connection);
 }
+
+function client_find(): array
+{
+    $connection = open_database_connection();
+
+    $user_ID = $_SESSION["user_login"];
+    $result = $connection->query(
+        "SELECT * FROM client where userID=$user_ID");
+
+    $clients = [];
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $clients[] = $row;
+    }
+
+    close_database_connection($connection);
+
+    return $clients;
+}
+
+function update_client_project($id, $clientID){
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("UPDATE project SET clientID= :clientID  where  id = :id");
+    $statement->bindParam(':clientID', $clientID);
+    $statement->bindParam(':id', $id);
+    $statement->execute();
+
+    close_database_connection($connection);
+}
+
+function update_project_rate($projectId, $newRate) {
+    $connection = open_database_connection();
+
+    $statement = $connection->prepare("UPDATE project SET rate= :newRate  where  id = :id");
+    $statement->bindParam(':newRate', $newRate);
+    $statement->bindParam(':id', $projectId);
+    $statement->execute();
+
+    close_database_connection($connection);
+}
+
+function project_add($projectName, $rate)
+{
+    $user_ID = $_SESSION["user_login"];
+    $connection = open_database_connection();
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $statement = $connection->prepare("SELECT * FROM project where  projectName = :projectName and userID = :userID");
+    $statement->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+    $statement->bindParam(':userID', $user_ID, PDO::PARAM_STR);
+    $statement->execute();
+    $clientname_err = "";
+
+    if ($statement->rowCount() > 0) {
+        $clientname_err = "Project exist";
+    }
+
+    if (empty(trim($projectName))) {
+        $clientname_err = "Please enter a projectname.";
+
+    }
+    if (empty($clientname_err)) {
+
+        $stmt = $connection->prepare("INSERT INTO project (userID,projectName,rate) VALUES (:userID, :projectName, :rate)");
+        $data = [
+            'userID' => $user_ID,
+            'projectName' => $projectName,
+            'rate' => $rate,
+        ];
+        if ($stmt->execute($data)) {
+
+        } else {
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+    }
+    close_database_connection($connection);
+}
+
 ?>

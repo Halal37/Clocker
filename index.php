@@ -53,6 +53,42 @@ switch ($requested_action) {
             redirect_login();
         }
         break;
+    case "getProjectsList":
+        if (user_logged_in()) {
+            header('Content-type: application/json');
+            echo json_encode(get_projects_list_action());
+        } else {
+            redirect_login();
+        }
+        break;
+    case "addProject":
+        if (user_logged_in()) {
+            project_add_action($_POST['projectname'], $_POST['rate']);
+        } else {
+            redirect_login();
+        }
+        break;
+    case "projectDetails":
+        if (user_logged_in()) {
+            project_details_action($_GET['id']);
+        } else {
+            redirect_login();
+        }
+        break;
+    case "updateRate":
+        if (user_logged_in()) {
+            update_project_rate_action($_GET['projectId'], $_GET['newRate']);
+        } else {
+            redirect_login();
+        }
+        break;
+    case "delete_project":
+        if (user_logged_in()) {
+            delete_project_action($_GET['id']);
+        } else {
+            redirect_login();
+        }
+        break;
     case "clients":
         if (user_logged_in()) {
             clients_action();
@@ -70,6 +106,13 @@ switch ($requested_action) {
     case "clients_details":
         if (user_logged_in()) {
             clients_details_action($_POST['details']);
+        } else {
+            redirect_login();
+        }
+        break;
+    case "updateClient":
+        if (user_logged_in()) {
+            update_client_project_action($_GET['projectId'], $_GET['clientId']);
         } else {
             redirect_login();
         }

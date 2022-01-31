@@ -66,6 +66,26 @@
     z-index: 5;
 }
 
+.addClientModal {
+    position: fixed;
+    background-color: white;
+    border-radius: 50px;
+    width: 550px;
+    height: 300px;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}
+
+.project-select-dropdown {
+    width: 100% !important;
+    border: 2px solid black;
+    outline: auto;
+    height: 46px !important;
+}
+
 .modalTitle {
     display: flex;
     justify-content: center;

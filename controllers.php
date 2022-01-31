@@ -34,7 +34,7 @@ function password_recover_action()
 
 function start_task_action($taskTitle, $taskProject)
 {
-    start_task($_SESSION['user_login'], $taskTitle); // TODO: zmienić na aktualnie zalogowanego usera i wybieranie projektu
+    start_task($_SESSION['user_login'], $taskTitle, $taskProject); // TODO: zmienić na aktualnie zalogowanego usera i wybieranie projektu
 }
 
 function stop_task_action()
@@ -44,12 +44,43 @@ function stop_task_action()
 
 function add_manual_task_action($taskTitle, $taskProject, $dateFrom, $dateTo)
 {
-    add_manual_task($_SESSION['user_login'], 1, $taskTitle, $dateFrom, $dateTo); // TODO: zmienić na aktualnie zalogowanego usera i wybieranie projektu
+    add_manual_task($_SESSION['user_login'], $taskProject, $taskTitle, $dateFrom, $dateTo);
 }
 
 function projects_action()
 {
+    $projects = get_all_projects($_SESSION['user_login']);
     require 'templates/projects.php';
+}
+
+function get_projects_list_action(): array
+{
+    return get_all_projects($_SESSION['user_login']);
+}
+
+function project_details_action($id) {
+    $project = get_project_by_id($id);
+    $tasks = get_tasks_by_project_id($id);
+    $clients = client_find();
+    require 'templates/projectDetail.php';
+}
+
+#[NoReturn] function delete_project_action($id){
+    delete_project($id);
+    redirect_home();
+}
+
+function project_add_action($projectName, $rate){
+    project_add($projectName, $rate);
+    require 'templates/project_add.php';
+}
+
+#[NoReturn] function update_client_project_action($projectId, $clientId){
+    update_client_project($projectId, $clientId);
+}
+
+function update_project_rate_action($projectId, $newRate) {
+    update_project_rate($projectId, $newRate);
 }
 
 function clients_action()

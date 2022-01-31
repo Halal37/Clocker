@@ -8,7 +8,7 @@ if (addTaskBtn) {
       let modalTitle = document.createElement("h4");
       let modalForm = document.createElement("form");
       let titleInput = document.createElement("input");
-      let projectInput = document.createElement("input");
+      let projectSelect = document.createElement("select");
       let submitBtn = document.createElement("button");
       let exitIcon = document.createElement("i");
       let iframe = document.createElement("iframe");
@@ -23,9 +23,9 @@ if (addTaskBtn) {
       titleInput.name = "title";
       titleInput.className = "modalInput";
       titleInput.placeholder = "Podaj tytuł zadania";
-      projectInput.name = "project";
-      projectInput.className = "modalInput";
-      projectInput.placeholder = "Wybierz projekt";
+      projectSelect.name = "project";
+      projectSelect.className = "modalInput project-select-dropdown";
+      projectSelect.placeholder = "Wybierz projekt";
       submitBtn.className = "submitBtn";
       submitBtn.innerHTML = "<i class='bi-play-circle-fill'></i>";
       exitIcon.className = "exitIcon";
@@ -34,8 +34,30 @@ if (addTaskBtn) {
       iframe.id = "dummyframe";
       iframe.style.display = "none";
 
+
+      fetch(`/?action=getProjectsList`, {
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+         },
+         method: 'GET'
+      })
+          .then(response => {return response.json()})
+          .then(response => {
+             response.forEach(item => {
+                let newOption = document.createElement("option");
+                newOption.value = item['id'];
+                newOption.innerHTML = item['projectName'];
+
+                projectSelect.appendChild(newOption);
+             });
+          });
+
+
+
+
       modalForm.appendChild(titleInput);
-      modalForm.appendChild(projectInput);
+      modalForm.appendChild(projectSelect);
       modalForm.appendChild(submitBtn);
       modal.appendChild(exitIcon);
       modal.appendChild(modalTitle);
@@ -44,6 +66,7 @@ if (addTaskBtn) {
 
       document.body.appendChild(background);
       document.body.appendChild(modal);
+
 
       exitIcon.addEventListener("click", () => {
          document.body.removeChild(background);

@@ -77,7 +77,6 @@
         </div>
     </main>
     <script src="../scripts/time-tracking.js"></script>
-    <script src="../scripts/manual-task-addition.js"></script>
     <script src="../scripts/mobileMenu.js"></script>
 </body>
 
